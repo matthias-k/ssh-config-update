@@ -82,7 +82,7 @@ def update_remote(data):
     last_remote = get_remote(data)
     print("last remote:", last_remote)
     new_remote = check_remotes(data['remotes'], verbose=True, last_remote=last_remote)
-    if new_remote != last_remote:
+    if new_remote and new_remote != last_remote:
         set_remote(data, new_remote)
         announce_remote(data, new_remote)
 
