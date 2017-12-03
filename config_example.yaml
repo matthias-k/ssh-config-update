@@ -1,7 +1,7 @@
-targets:
-  headnote:
-    configfile: ~/.ssh/config.d/hnauto
-    remotes:
+targets:                                # you can update multiple hosts in your ssh config
+  headnote:                             # this is the name of the host you want to update
+    configfile: ~/.ssh/config.d/hnauto  # the config file to write (will be overwritten!)
+    remotes:                            # which possible configurations to test
       local:
         Hostname: 1.2.3.4
         Port: 22
