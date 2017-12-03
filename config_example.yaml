@@ -1,0 +1,16 @@
+targets:
+  headnote:
+    configfile: ~/.ssh/config.d/hnauto
+    remotes:
+      local:
+        Hostname: 1.2.3.4
+        Port: 22
+        User: myuser
+      eduroam:
+        Hostname: 5.6.1.2
+        Port: 60222
+        User: myuser
+      remote:
+        Hostname: 80.127.0.1
+        Port: 50222
+        User: myotheruser
