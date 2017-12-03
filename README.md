@@ -5,7 +5,7 @@ This is a simple tool to automatically update parts of the ssh config based on t
 ## Setup
 
 * create a `config.yaml` based on `config_example.yaml` that reflects your setup
-* `ssh_config_update` is intended to overwrite one config file for each ssh target that you want to update. The `config.yaml` states the file for each target with the `configfile` variable. You need to include these files in your main ssh config with the `Import` statement:
+* `ssh_config_update` is intended to overwrite one config file for each ssh target that you want to update. The `config.yaml` states the file for each target with the `configfile` variable. You need to include these files in your main ssh config `~/.ssh/config` with the `Include` statement:
 
 ```name=~/.ssh/config
 Include config.d/hnauto
