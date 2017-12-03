@@ -14,3 +14,4 @@ Include config.d/hnauto
 ```
 
 * run `ssh_config_update` either once with `./ssh_config_update.py update` or keep it running with `./ssh_config_update.py watch`.
+* With the `--notify` option you will get desktop notifications via libnotify in case of config updates

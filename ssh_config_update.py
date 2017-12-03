@@ -78,13 +78,14 @@ def announce_remote(data, remote):
     Hello.show()
 
 
-def update_remote(data):
+def update_remote(data, notify=False):
     last_remote = get_remote(data)
     print("last remote:", last_remote)
     new_remote = check_remotes(data['remotes'], verbose=True, last_remote=last_remote)
     if new_remote and new_remote != last_remote:
         set_remote(data, new_remote)
-        announce_remote(data, new_remote)
+        if notify:
+            announce_remote(data, new_remote)
 
 
 @click.group()
@@ -92,21 +93,24 @@ def cli():
     pass
 
 
-def _update():
+def _update(notify=False):
     config = yaml.load(open('config.yaml'))
     for key, data in config['targets'].items():
         if 'target' not in data:
             data['target'] = key
-        update_remote(data)
+        update_remote(data, notify=notify)
+
 
 @cli.command(help="Check and update all targets")
-def update():
-    _update()
+@click.option('--notify/--no-notify', help="Notify user when config has been updated")
+def update(notify):
+    _update(notify=notify)
 
 
 @cli.command(help="watch for changes and update")
-def watch():
-    _update()
+@click.option('--notify/--no-notify', help="Notify user when config has been updated")
+def watch(notify):
+    _update(notify=notify)
     last_update = datetime.utcnow()
     while True:
         if datetime.utcnow() - last_update > timedelta(seconds=60):
