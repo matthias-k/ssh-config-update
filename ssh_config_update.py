@@ -86,6 +86,7 @@ def update_remote(data, notify=False):
         set_remote(data, new_remote)
         if notify:
             announce_remote(data, new_remote)
+    return new_remote is not None
 
 
 @click.group()
@@ -95,10 +96,13 @@ def cli():
 
 def _update(notify=False):
     config = yaml.load(open('config.yaml'))
+    success_dict = {}
     for key, data in config['targets'].items():
         if 'target' not in data:
             data['target'] = key
-        update_remote(data, notify=notify)
+        success_dict[key] = update_remote(data, notify=notify)
+
+    return success_dict
 
 
 @cli.command(help="Check and update all targets")
@@ -110,14 +114,15 @@ def update(notify):
 @cli.command(help="watch for changes and update")
 @click.option('--notify/--no-notify', help="Notify user when config has been updated")
 def watch(notify):
-    _update(notify=notify)
     last_update = datetime.utcnow()
+    last_success = False
     while True:
-        if datetime.utcnow() - last_update > timedelta(seconds=60):
-            _update()
+        if not last_success or datetime.utcnow() - last_update > timedelta(seconds=60):
+            print("starting check at", datetime.utcnow())
+            success_dict = _update(notify=notify)
+            last_success = all(success_dict.values())
             last_update = datetime.utcnow()
         time.sleep(1)
-
 
 
 if __name__ == '__main__':
